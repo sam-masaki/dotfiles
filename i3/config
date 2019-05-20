@@ -1,0 +1,218 @@
+# i3 config file (v4)
+#
+# Please see https://i3wm.org/docs/userguide.html for a complete reference!
+
+set $mod Mod4
+floating_modifier $mod
+
+font pango: Gohu Gohufont 9
+
+hide_edge_borders smart
+default_border pixel 2
+default_floating_border pixel 2
+
+focus_follows_mouse no
+focus_wrapping yes
+
+set $ws00 "0:♬"
+set $ws01 "1:vi"
+set $ws02 "2:fx"
+set $ws03 "3:3"
+set $ws04 "4:4"
+set $ws05 "5:5"
+set $ws06 "6:6"
+set $ws07 "7:7"
+set $ws08 "8:ml"
+set $ws09 "9:pd"
+set $ws10 "10:10"
+set $ws11 "11:11"
+set $ws12 "12:fb"
+
+set $wsm01 "13:M1"
+set $wsm02 "14:M2"
+set $wsm03 "15:M3"
+set $wsm04 "16:M4"
+set $wsm05 "17:M5"
+set $wsm06 "18:M6"
+set $wsm07 "19:M7"
+set $wsm08 "20:M8"
+set $wsm09 "21:M9"
+set $wsm10 "22:M10"
+set $wsm11 "23:M11"
+set $wsm12 "24:M12"
+
+bindsym $mod+d exec dmenu_run -fn "Gohu GohuFont:pixelsize=11"
+bindsym $mod+Shift+q kill
+
+# Start a regular terminal or floating terminal
+bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Shift+Return exec urxvt -name floating
+
+# Toggle tiling / floating
+bindsym $mod+space floating toggle
+
+## Move focus between floating & non-floating
+bindsym $mod+Tab focus mode_toggle
+
+# Change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+t layout tabbed
+bindsym $mod+x layout toggle split
+
+bindsym $mod+h split h
+bindsym $mod+v split v
+
+bindsym $mod+p focus parent
+bindsym $mod+Shift+p focus child
+
+bindsym $mod+f fullscreen toggle
+bindsym $mod+r mode "resize"
+
+bindsym $mod+Shift+r restart
+bindsym $mod+Shift+c reload
+
+# Exit
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'Do you really want to exit i3?' -b 'Yes, exit i3' 'i3-msg exit'"
+
+# Switch between qwerty and qgmlwy
+bindsym $mod+period exec setxkbmap -variant basic
+bindsym $mod+slash exec setxkbmap -variant carpalx
+
+# Cycle this workspace between outputs
+bindsym $mod+Shift+Tab exec python ~/.scripts/cycle-workspace.py
+
+# Focus & Move
+bindsym $mod+Control+f focus right
+bindsym $mod+Control+b focus left
+bindsym $mod+Control+n focus down
+bindsym $mod+Control+p focus up
+
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# Start my usual programs with $mod and the ThinkVantage button
+bindsym $mod+XF86Launch1 exec thunderbird; exec keepassxc; exec spotify; exec vivaldi-stable; exec firefox
+
+mode "resize" {
+  bindsym Left resize shrink width 1 px or 1 ppt
+  bindsym Down resize grow height 1 px or 1 ppt
+  bindsym Up resize shrink height 1 px or 1 ppt
+  bindsym Right resize grow width 1 px or 1 ppt
+
+  bindsym Shift+Left resize shrink width 10 px or 10 ppt
+  bindsym Shift+Down resize grow height 10 px or 10 ppt
+  bindsym Shift+Up resize shrink height 10 px or 10 ppt
+  bindsym Shift+Right resize grow width 10 px or 10 ppt
+
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
+}
+
+bar {
+  position top
+  strip_workspace_numbers yes
+  status_command py3status -c ~/.config/i3status/config
+}
+
+# Make sure i3 starts in workspace 1 and not the music player one
+workspace $ws01 output LVDS1
+
+exec ~/.screenlayout/default.sh
+exec --no-startup-id lxsession
+exec --no-startup-id dropbox
+exec --no-startup-id protonmail-bridge --no-window
+exec --no-startup-id feh --bg-fill ~/.config/i3/pastel.jpg
+exec --no-startup-id dunst
+
+# Default workspaces for my usual programs
+assign [class="keepassxc"] $ws09
+assign [class="Thunderbird"] $ws08
+assign [class="Firefox"] $ws02
+assign [class="Caprine"] $ws12
+for_window [title="Vivaldi - Vivaldi"] move to workspace $ws01
+for_window [title="Spotify Premium"] move to workspace $ws00
+
+# Various dialogs that should be floating
+for_window [class="URxvt" instance="floating"] floating enable, sticky enable
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="task_dialog"] floating enable
+for_window [class="fingerprint-helper"] floating enable
+for_window [title="Steam - News"] floating enable
+for_window [title="Friends List"] floating enable
+for_window [class="Blueman-manager"] floating enable
+
+# Mostly the default colors, but with a bright green focused border
+#                       border  backgr. text    indicator child_border
+client.focused          #4c7899 #00ff00 #ffffff #2e9ef4   #00ff00
+client.focused_inactive #333333 #999999 #ffffff #484e50   #999999
+client.unfocused        #333333 #222222 #888888 #292d2e   #222222
+client.urgent           #2f343a #900000 #ffffff #900000   #900000
+client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
+
+client.background       #ffffff
+
+# Switch to workspace
+bindsym $mod+grave workspace $ws00
+bindsym $mod+1 workspace $ws01
+bindsym $mod+2 workspace $ws02
+bindsym $mod+3 workspace $ws03
+bindsym $mod+4 workspace $ws04
+bindsym $mod+5 workspace $ws05
+bindsym $mod+6 workspace $ws06
+bindsym $mod+7 workspace $ws07
+bindsym $mod+8 workspace $ws08
+bindsym $mod+9 workspace $ws09
+bindsym $mod+0 workspace $ws10
+bindsym $mod+minus workspace $ws11
+bindsym $mod+equal workspace $ws12
+
+bindsym $mod+F1 workspace $wsm01
+bindsym $mod+F2 workspace $wsm02
+bindsym $mod+F3 workspace $wsm03
+bindsym $mod+F4 workspace $wsm04
+
+bindsym $mod+F5 workspace $wsm05
+bindsym $mod+F6 workspace $wsm06
+bindsym $mod+F7 workspace $wsm07
+bindsym $mod+F8 workspace $wsm08
+
+bindsym $mod+F9 workspace $wsm09
+bindsym $mod+F10 workspace $wsm10
+bindsym $mod+F11 workspace $wsm11
+bindsym $mod+F12 workspace $wsm12
+
+# Move focused container to workspace
+bindsym $mod+Shift+grave move container to workspace $ws00
+bindsym $mod+Shift+1 move container to workspace $ws01
+bindsym $mod+Shift+2 move container to workspace $ws02
+bindsym $mod+Shift+3 move container to workspace $ws03
+bindsym $mod+Shift+4 move container to workspace $ws04
+bindsym $mod+Shift+5 move container to workspace $ws05
+bindsym $mod+Shift+6 move container to workspace $ws06
+bindsym $mod+Shift+7 move container to workspace $ws07
+bindsym $mod+Shift+8 move container to workspace $ws08
+bindsym $mod+Shift+9 move container to workspace $ws09
+bindsym $mod+Shift+0 move container to workspace $ws10
+bindsym $mod+Shift+minus move container to workspace $ws11
+bindsym $mod+Shift+equal move container to workspace $ws12
+
+bindsym $mod+Shift+F1 move container to workspace $wsm01
+bindsym $mod+Shift+F2 move container to workspace $wsm02
+bindsym $mod+Shift+F3 move container to workspace $wsm03
+bindsym $mod+Shift+F4 move container to workspace $wsm04
+
+bindsym $mod+Shift+F5 move container to workspace $wsm05
+bindsym $mod+Shift+F6 move container to workspace $wsm06
+bindsym $mod+Shift+F7 move container to workspace $wsm07
+bindsym $mod+Shift+F8 move container to workspace $wsm08
+
+bindsym $mod+Shift+F9 move container to workspace $wsm09
+bindsym $mod+Shift+F10 move container to workspace $wsm10
+bindsym $mod+Shift+F11 move container to workspace $wsm11
+bindsym $mod+Shift+F12 move container to workspace $wsm12

@@ -1,0 +1,124 @@
+# py3status configuration file.
+
+# It is important that this file is edited as UTF-8.
+# The following line should contain a sharp s:
+# ß
+# If the above line is not correctly displayed, fix your editor first!
+
+general {
+  colors = true
+  interval = 1
+}
+
+order += "window_title_async"
+order += "cpu_temperature 0"
+order += "cpu_usage"
+order += "frame drives"
+order += "ethernet _first_"
+order += "group wifi_group"
+order += "battery all"
+order += "arch_updates"
+order += "volume_status"
+order += "backlight"
+order += "tztime local"
+
+arch_updates {
+  format = "{pacman}/{aur}"
+  include_aur = True
+}
+
+cpu_temperature 0 {
+  format = "%degrees °C"
+  max_threshold = 75
+}
+
+cpu_usage {
+  format = "%usage"
+  max_threshold = 80
+  degraded_threshold = 50
+}
+
+ipv6 {
+  format_up = "%ip"
+  format_down = "IP6"
+}
+
+frame drives {
+  diskdata {
+    disk = sdb2
+    format = "rt {free}GiB"
+  }
+  diskdata {
+    disk = sda1
+    format = "sa {free}GiB"
+  }
+}
+
+group wifi_group {
+  format = "{output}"
+  button_next = 1
+
+  wifi {
+    format = "{icon} {freq_ghz}G @ {ssid}|wst"
+  }
+
+  frame {
+    format = "{output}"
+    format_separator = " "
+
+    whatismyip {
+      button_toggle = 0
+    }
+    wifi {
+      format = "@ {ssid}|wip"
+    }
+  }
+}
+
+wireless _first_ {
+  format_up = "%bitrate %frequency %icon @ %essid"
+  format_down = "no W"
+}
+
+ethernet _first_ {
+  format_up = "%ip (%speed)"
+  format_down = "e"
+}
+
+battery all {
+  format = "%status %percentage"
+  hide_seconds = true
+  format_down = "AC"
+  integer_battery_capacity = true
+  status_chr = "C"
+  status_bat = "D"
+  status_unk = "F"
+  low_threshold = 20
+  threshold_type = percentage
+}
+
+volume master {
+  format = "♬ %volume"
+  format_muted = "M %volume"
+  device = "default"
+  mixer = "Master"
+  mixer_idx = 0
+}
+
+volume_status {
+  format = "♬ {percentage}"
+  format_muted = "m {percentage}"
+  cache_timeout = 10
+}
+
+backlight {
+  cache_timeout = 0.5
+}
+
+tztime local {
+  format = "%a, %Y-%m-%d %H:%M:%S"
+}
+
+window_title_async {
+  max_width = 50
+}
