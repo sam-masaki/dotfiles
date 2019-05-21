@@ -33,12 +33,18 @@
       show-paren-delay 0
       scroll-conservatively 101
       global-prettify-symbols-mode t
+      display-line-numbers-type 'visual
+      custom-file "~/.emacs.d/custom.el"
       whitespace-style (quote (face trailing space-before-tab newline indentation empty space-after-tab tab-mark)))
 (show-paren-mode 1)
 
-(add-hook 'c-mode-hook
-          (lambda ()
-            (google-set-c-style)))
+(defun init-c-c++ ()
+  (setq indent-tabs-mode nil)
+  (google-set-c-style)
+  (whitespace-mode))
+
+(add-hook 'c-mode-hook 'init-c-c++)
+(add-hook 'c++-mode-hook 'init-c-c++)
 
 (add-hook 'python-mode-hook
           (lambda ()
@@ -68,3 +74,5 @@
 (add-hook 'after-init-hook
           (lambda ()
             (load-theme 'moe-dark t)))
+
+(load custom-file)
