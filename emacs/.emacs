@@ -33,7 +33,7 @@
       show-paren-delay 0
       scroll-conservatively 101
       global-prettify-symbols-mode t
-      display-line-numbers-type 'visual
+      display-line-numbers-type 'relative
       custom-file "~/.emacs.d/custom.el"
       whitespace-style (quote (face trailing space-before-tab newline indentation empty space-after-tab tab-mark)))
 (show-paren-mode 1)
