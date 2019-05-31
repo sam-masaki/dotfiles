@@ -10,18 +10,15 @@
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 
-(use-package smart-hungry-delete
-  :ensure t
-  :bind (("<backspace>" . smart-hungry-delete-backward-char)
-         ("C-d" . smart-hungry-delete-forward-char))
-  :defer nil
-  :config (smart-hungry-delete-add-default-hooks))
-
 ;; (setq leerzeichen-line-feed-glyph nil)
 
 (use-package smartparens-config
   :commands smartparens-mode)
 (smartparens-global-mode 1)
+
+(use-package hungry-delete)
+(global-hungry-delete-mode 1)
+(setq hungry-delete-chars-to-skip " \t")
 
 (use-package company
   :commands company-mode)
@@ -29,14 +26,21 @@
 
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
+(winner-mode 1)
+
 (setq column-number-mode t
       show-paren-delay 0
       scroll-conservatively 101
       global-prettify-symbols-mode t
       display-line-numbers-type 'relative
+      sp-base-key-bindings 'paredit
+      sp-autodelete-closing-pair 'always
+      vc-follow-symlinks t
       custom-file "~/.emacs.d/custom.el"
       whitespace-style (quote (face trailing space-before-tab newline indentation empty space-after-tab tab-mark)))
+
 (show-paren-mode 1)
+(sp-use-paredit-bindings)
 
 (defun init-c-c++ ()
   (setq indent-tabs-mode nil)
