@@ -24,15 +24,20 @@
   :commands company-mode)
 (global-company-mode 1)
 
+(use-package git-gutter)
+(global-git-gutter-mode 1)
+
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
 (winner-mode 1)
+
+(setq-default display-line-numbers-width 3)
 
 (setq column-number-mode t
       show-paren-delay 0
       scroll-conservatively 101
       global-prettify-symbols-mode t
-      display-line-numbers-type 'relative
+      display-line-numbers-type t
       sp-base-key-bindings 'paredit
       sp-autodelete-closing-pair 'always
       vc-follow-symlinks t
