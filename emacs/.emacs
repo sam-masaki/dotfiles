@@ -20,6 +20,9 @@
 (global-hungry-delete-mode 1)
 (setq hungry-delete-chars-to-skip " \t")
 
+(use-package whitespace-cleanup-mode)
+(global-whitespace-cleanup-mode 1)
+
 (use-package company
   :commands company-mode)
 (global-company-mode 1)
