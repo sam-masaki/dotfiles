@@ -22,10 +22,10 @@ set $ws04 "4:4"
 set $ws05 "5:5"
 set $ws06 "6:6"
 set $ws07 "7:7"
-set $ws08 "8:ml"
-set $ws09 "9:pd"
-set $ws10 "10:10"
-set $ws11 "11:11"
+set $ws08 "8:8"
+set $ws09 "9:9"
+set $ws10 "10:ml"
+set $ws11 "11:kp"
 set $ws12 "12:fb"
 
 set $wsm01 "13:M1"
@@ -131,8 +131,8 @@ exec --no-startup-id feh --bg-fill ~/.config/i3/pastel.jpg
 exec --no-startup-id dunst
 
 # Default workspaces for my usual programs
-assign [class="keepassxc"] $ws09
-assign [class="Thunderbird"] $ws08
+assign [class="keepassxc"] $ws11
+assign [class="Thunderbird"] $ws10
 assign [class="Firefox"] $ws02
 assign [class="Caprine"] $ws12
 for_window [title="Vivaldi - Vivaldi"] move to workspace $ws01
