@@ -9,6 +9,10 @@
              '("org" . "https://orgmode.org/elpa/"))
 (package-initialize)
 
+(use-package smartparens
+  :init (use-package smartparens-config)
+  :commands smartparens-mode)
+
 (use-package hungry-delete
   :config
   (global-hungry-delete-mode 1)
@@ -18,7 +22,6 @@
   :config (global-whitespace-cleanup-mode 1))
 
 (use-package company
-  :config (global-company-mode 1)
   :commands company-mode)
 
 (use-package git-gutter
@@ -79,6 +82,18 @@
             (setq indent-tabs-mode nil
                   js-indent-level 2)))
 
+(setq lispy-mode-hooks
+      '(clojure-mode-hook
+        emacs-lisp-mode-hook
+        lisp-mode-hook
+        scheme-mode-hook))
+
+(dolist (hook lispy-mode-hooks)
+  (add-hook hook (lambda ()
+                   (smartparens-mode)
+                   (smartparens-strict-mode)
+                   (rainbow-delimiters-mode))))
+
 (if (version<= "26.0.50" emacs-version)
     (global-display-line-numbers-mode)
   (setq linum-format "%3d ")
@@ -100,6 +115,7 @@
            (scroll-bar-mode -1)
            (menu-bar-mode -1)
            (tool-bar-mode -1)
+           (global-company-mode 1)
            (setq gc-cons-threshold 800000)))
 
 (load custom-file)
