@@ -1,4 +1,7 @@
 ;; .emacs
+(setq gc-cons-threshold 64000000)
+
+(setq use-package-always-ensure t)
 (require 'package)
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/"))
@@ -6,29 +9,28 @@
              '("org" . "https://orgmode.org/elpa/"))
 (package-initialize)
 
-(scroll-bar-mode -1) ;; Putting this after (menu-bar-mode -1) causes visual glitches where the menu bar would be until you resize the window
-(menu-bar-mode -1)
-(tool-bar-mode -1)
+(use-package hungry-delete
+  :config
+  (global-hungry-delete-mode 1)
+  (setq hungry-delete-chars-to-skip " \t"))
 
-;; (setq leerzeichen-line-feed-glyph nil)
-
-(use-package smartparens-config
-  :commands smartparens-mode)
-(smartparens-global-mode 1)
-
-(use-package hungry-delete)
-(global-hungry-delete-mode 1)
-(setq hungry-delete-chars-to-skip " \t")
-
-(use-package whitespace-cleanup-mode)
-(global-whitespace-cleanup-mode 1)
+(use-package whitespace-cleanup-mode
+  :config (global-whitespace-cleanup-mode 1))
 
 (use-package company
+  :config (global-company-mode 1)
   :commands company-mode)
-(global-company-mode 1)
 
-(use-package git-gutter)
-(global-git-gutter-mode 1)
+(use-package git-gutter
+  :config (global-git-gutter-mode 1))
+
+(use-package projectile
+  :config
+  (projectile-mode 1)
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
+
+(use-package subword
+  :config (global-subword-mode 1))
 
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
@@ -45,10 +47,16 @@
       sp-autodelete-closing-pair 'always
       vc-follow-symlinks t
       custom-file "~/.emacs.d/custom.el"
+      inhibit-startup-screen t
+      initial-scratch-message " ;; hey lol\n\n"
       whitespace-style (quote (face trailing space-before-tab newline indentation empty space-after-tab tab-mark)))
 
+
+(use-package ag)
+(use-package dumb-jump)
+
 (show-paren-mode 1)
-(sp-use-paredit-bindings)
+(global-hl-line-mode 1)
 
 (defun init-c-c++ ()
   (setq indent-tabs-mode nil)
@@ -66,6 +74,11 @@
           (lambda ()
             (setq indent-tabs-mode nil)))
 
+(add-hook 'js-mode-hook
+          (lambda ()
+            (setq indent-tabs-mode nil
+                  js-indent-level 2)))
+
 (if (version<= "26.0.50" emacs-version)
     (global-display-line-numbers-mode)
   (setq linum-format "%3d ")
@@ -82,7 +95,11 @@
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 
 (add-hook 'after-init-hook
-          (lambda ()
-            (load-theme 'moe-dark t)))
+         (lambda ()
+           (load-theme 'moe-dark t)
+           (scroll-bar-mode -1)
+           (menu-bar-mode -1)
+           (tool-bar-mode -1)
+           (setq gc-cons-threshold 800000)))
 
 (load custom-file)
