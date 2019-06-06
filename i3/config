@@ -15,8 +15,8 @@ focus_follows_mouse no
 focus_wrapping yes
 
 set $ws00 "0:♬"
-set $ws01 "1:vi"
-set $ws02 "2:fx"
+set $ws01 "1:1"
+set $ws02 "2:2"
 set $ws03 "3:3"
 set $ws04 "4:4"
 set $ws05 "5:5"
@@ -97,7 +97,7 @@ bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # Start my usual programs with $mod and the ThinkVantage button
-bindsym $mod+XF86Launch1 exec thunderbird; exec keepassxc; exec spotify; exec vivaldi-stable; exec firefox
+bindsym $mod+XF86Launch1 exec thunderbird; exec keepassxc; exec spotify; exec firefox
 
 mode "resize" {
   bindsym Left resize shrink width 1 px or 1 ppt
@@ -133,9 +133,8 @@ exec --no-startup-id dunst
 # Default workspaces for my usual programs
 assign [class="keepassxc"] $ws11
 assign [class="Thunderbird"] $ws10
-assign [class="Firefox"] $ws02
+assign [class="Firefox"] $ws01
 assign [class="Caprine"] $ws12
-for_window [title="Vivaldi - Vivaldi"] move to workspace $ws01
 for_window [title="Spotify Premium"] move to workspace $ws00
 
 # Various dialogs that should be floating
