@@ -1,7 +1,6 @@
 ;; .emacs
 (setq gc-cons-threshold 64000000)
 
-(setq use-package-always-ensure t)
 (require 'package)
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/"))
@@ -31,6 +30,44 @@
   :config
   (projectile-mode 1)
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
+
+(use-package org
+  :init
+  (define-key global-map (kbd "C-c a") 'org-agenda)
+  (define-key global-map (kbd "C-c c") 'org-capture)
+  :config
+  (setq
+   org-agenda-files '("~/notes/org/main.org")
+   org-archive-location "~/notes/org/archive.org::* From %s"
+   org-capture-templates '(("t" "To Do"
+                            entry
+                            (file+olp "~/notes/org/main.org"
+                                      "Things to do")
+                            "* TODO %?\n")
+                           ("p" "Programming Ideas"
+                            entry
+                            (file+olp "~/notes/org/dev-ideas.org"
+                                      "To File")
+                            "* %?\n")
+                           ("c" "Templates for things to watch, read, etc")
+                           ("cl" "To Listen"
+                            entry
+                            (file+olp "~/notes/org/to-cons.org"
+                                      "Music" "Try")
+                            "* %^{Artist} - %^{Album Name}\n")
+                           ("cr" "To Read"
+                            entry
+                            (file+olp "~/notes/org/to-cons.org"
+                                      "Books" "General")
+                            "* %^{Author} - %^{Title}\n")
+                           ("cw" "To Watch"
+                            entry
+                            (file+olp "~/notes/org/to-cons.org"
+                                      "Movies")
+                            "* %^{Title} - (%^{Year})\n"))))
+
+(use-package org-bullets
+  :commands org-bullets)
 
 (use-package subword
   :config (global-subword-mode 1))
@@ -93,6 +130,10 @@
                    (smartparens-mode)
                    (smartparens-strict-mode)
                    (rainbow-delimiters-mode))))
+
+(add-hook 'org-mode-hook
+          (lambda ()
+            (org-bullets-mode)))
 
 (if (version<= "26.0.50" emacs-version)
     (global-display-line-numbers-mode)
