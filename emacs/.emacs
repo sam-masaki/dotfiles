@@ -119,17 +119,21 @@
             (setq indent-tabs-mode nil
                   js-indent-level 2)))
 
-(setq lispy-mode-hooks
+(setq lisp-family-mode-hooks
       '(clojure-mode-hook
         emacs-lisp-mode-hook
         lisp-mode-hook
         scheme-mode-hook))
 
-(dolist (hook lispy-mode-hooks)
+(dolist (hook lisp-family-mode-hooks)
   (add-hook hook (lambda ()
                    (smartparens-mode)
                    (smartparens-strict-mode)
                    (rainbow-delimiters-mode))))
+
+(add-hook 'lisp-mode-hook
+          (lambda ()
+            (setq lisp-indent-function 'common-lisp-indent-function)))
 
 (add-hook 'org-mode-hook
           (lambda ()
