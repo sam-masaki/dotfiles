@@ -69,8 +69,20 @@
 (use-package org-bullets
   :commands org-bullets)
 
+(defun org-summary-todo (n-done n-not-done)
+  "Switch entry to DONE when all subentries are done, to TODO otherwise."
+  (let (org-log-done org-log-states)
+    (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
+
+(add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
+
 (use-package subword
   :config (global-subword-mode 1))
+
+(use-package slime
+             :init
+             (setq inferior-lisp-program "/usr/bin/sbcl"
+                   slime-contribs '(slime-repl slime-indentation)))
 
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
@@ -90,7 +102,6 @@
       inhibit-startup-screen t
       initial-scratch-message " ;; hey lol\n\n"
       whitespace-style (quote (face trailing space-before-tab newline indentation empty space-after-tab tab-mark)))
-
 
 (use-package ag)
 (use-package dumb-jump)
@@ -127,13 +138,16 @@
 
 (dolist (hook lisp-family-mode-hooks)
   (add-hook hook (lambda ()
-                   (smartparens-mode)
-                   (smartparens-strict-mode)
-                   (rainbow-delimiters-mode))))
+                   (smartparens-mode 1)
+                   (smartparens-strict-mode 1)
+                   (rainbow-delimiters-mode 1))))
 
 (add-hook 'lisp-mode-hook
           (lambda ()
-            (setq lisp-indent-function 'common-lisp-indent-function)))
+            (set (make-local-variable 'lisp-indent-function)
+                 'common-lisp-indent-function)
+            (common-lisp-set-style 'sbcl)))
+
 
 (add-hook 'org-mode-hook
           (lambda ()
