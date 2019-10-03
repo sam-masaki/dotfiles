@@ -100,7 +100,7 @@
       vc-follow-symlinks t
       custom-file "~/.emacs.d/custom.el"
       inhibit-startup-screen t
-      initial-scratch-message " ;; hey lol\n\n"
+      initial-scratch-message " ;; scratch\n\n"
       whitespace-style (quote (face trailing space-before-tab newline indentation empty space-after-tab tab-mark)))
 
 (use-package ag)
@@ -109,45 +109,46 @@
 (show-paren-mode 1)
 (global-hl-line-mode 1)
 
-(defun init-c-c++ ()
-  (setq indent-tabs-mode nil)
-  (google-set-c-style)
-  (whitespace-mode))
-
-(add-hook 'c-mode-hook 'init-c-c++)
-(add-hook 'c++-mode-hook 'init-c-c++)
-
-(add-hook 'python-mode-hook
-          (lambda ()
-            (setq indent-tabs-mode nil)))
-
-(add-hook 'emacs-lisp-mode-hook
-          (lambda ()
-            (setq indent-tabs-mode nil)))
-
-(add-hook 'js-mode-hook
-          (lambda ()
-            (setq indent-tabs-mode nil
-                  js-indent-level 2)))
-
 (setq lisp-family-mode-hooks
       '(clojure-mode-hook
         emacs-lisp-mode-hook
         lisp-mode-hook
         scheme-mode-hook))
 
-(dolist (hook lisp-family-mode-hooks)
+(setq lang-mode-hooks
+      '(c-mode-hook
+        c++-mode-hook
+        python-mode-hook
+        java-mode-hook
+        js-mode-hook
+        clojure-mode-hook
+        emacs-lisp-mode-hook
+        lisp-mode-hook
+        scheme-mode-hook))
+
+(dolist (hook lang-mode-hooks)
   (add-hook hook (lambda ()
                    (smartparens-mode 1)
+                   (setq indent-tabs-mode nil)
+                   (whitespace-mode))))
+
+(dolist (hook lisp-family-mode-hooks)
+  (add-hook hook (lambda ()
                    (smartparens-strict-mode 1)
                    (rainbow-delimiters-mode 1))))
+
+(add-hook 'c-mode-hook 'google-set-c-style)
+(add-hook 'c++-mode-hook 'google-set-c-style)
+
+(add-hook 'js-mode-hook
+          (lambda ()
+            (setq js-indent-level 2)))
 
 (add-hook 'lisp-mode-hook
           (lambda ()
             (set (make-local-variable 'lisp-indent-function)
                  'common-lisp-indent-function)
             (common-lisp-set-style 'sbcl)))
-
 
 (add-hook 'org-mode-hook
           (lambda ()
