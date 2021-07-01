@@ -8,8 +8,12 @@
              '("org" . "https://orgmode.org/elpa/"))
 (package-initialize)
 
+(require 'use-package-ensure)
+(setq use-package-always-ensure t)
+
 (use-package smartparens
-  :init (use-package smartparens-config)
+  :init (use-package smartparens-config
+	  :ensure smartparens)
   :commands smartparens-mode)
 
 (use-package hungry-delete
@@ -68,6 +72,8 @@
 
 (use-package org-bullets
   :commands org-bullets)
+
+(use-package moe-theme)
 
 (defun org-summary-todo (n-done n-not-done)
   "Switch entry to DONE when all subentries are done, to TODO otherwise."
